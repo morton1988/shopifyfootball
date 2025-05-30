@@ -67,6 +67,10 @@ def draw_text_on_shirt(image, x, y, text, font_path, font_size, text_color, outl
     paste_x = x - draw_width // 2 + 65
     image.paste(final_img, (paste_x, y), final_img)
 
+@app.route('/')
+def healthcheck():
+    return "Service is running.", 200
+
 @app.route('/generate', methods=['POST'])
 def generate():
     data = request.get_json()
