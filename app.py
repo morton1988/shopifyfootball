@@ -22,7 +22,7 @@ TEAMS = {
     "Crystal Palace": {"template_path": "static/teams/crystal palace no name.jpg", "text_color": "#919191", "x": 2235, "y": 868},
     "Everton": {"template_path": "static/teams/everton.jpg", "text_color": "#BBBBBB", "x": 1680, "y": 820},
     "Hull City": {"template_path": "static/teams/hull city NO NAME.jpg", "text_color": "#160E03", "x": 1680, "y": 820},
-    "Liverpool": {"template_path": "static/teams/LIVERPOOL NO NAME.jpg", "text_color": "#B5B5B7", "x": 2100, "y": 950},
+    "Liverpool": {"template_path": "static/teams/LIVERPOOL NO NAME.jpg", "text_color": "#B5B5B7", "x": 2150, "y": 1000},
     "Manchester City": {"template_path": "static/teams/MANCHESTER CITY NO NAME NUMBER 10.jpg", "text_color": "#FFFFFF", "x": 1700, "y": 800},
     "Manchester United": {"template_path": "static/teams/manchester united no name on shirt.jpg", "text_color": "#A5B0AC", "x": 2150, "y": 850},
     "Newcastle": {"template_path": "static/teams/newcastle NO NAME.jpg", "text_color": "#6B1019", "x": 1730, "y": 855},
