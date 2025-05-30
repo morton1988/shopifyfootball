@@ -30,13 +30,7 @@ TEAMS = {
     "Southampton": {"template_path": "static/teams/southampton NO NAME.jpg", "text_color": "#B6B6B6", "x": 1670, "y": 830},
     "Tottenham": {"template_path": "static/teams/tottenham no name BRIGHTER.jpg", "text_color": "#3B3E51", "x": 1680, "y": 830},
     "West Ham": {"template_path": "static/teams/west ham no name.jpg", "text_color": "#B2B2B2", "x": 1680, "y": 830},
-    "Wolves": {
-        "template_path": "static/teams/wolves NO NAME.jpg",
-        "text_color": "#000000",
-        "outline_color": "#FFFFFF",
-        "x": 1735,
-        "y": 830
-    }
+    "Wolves": {"template_path": "static/teams/wolves NO NAME.jpg", "text_color": "#000000", "x": 1735, "y": 830, "outline_color": "#AAAAAA"}
 }
 
 def draw_text_on_shirt(image, x, y, text, font_path, font_size, text_color, outline_color=None, rotation_angle=-2, outline_thickness=2):
