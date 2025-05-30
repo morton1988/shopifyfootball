@@ -30,7 +30,13 @@ TEAMS = {
     "Southampton": {"template_path": "static/teams/southampton NO NAME.jpg", "text_color": "#B6B6B6", "x": 1670, "y": 830},
     "Tottenham": {"template_path": "static/teams/tottenham no name BRIGHTER.jpg", "text_color": "#3B3E51", "x": 1680, "y": 830},
     "West Ham": {"template_path": "static/teams/west ham no name.jpg", "text_color": "#B2B2B2", "x": 1680, "y": 830},
-    "Wolves": {"template_path": "static/teams/wolves NO NAME.jpg", "text_color": "#000000", "x": 1735, "y": 830}
+    "Wolves": {
+        "template_path": "static/teams/wolves NO NAME.jpg",
+        "text_color": "#000000",
+        "outline_color": "#FFFFFF",
+        "x": 1735,
+        "y": 830
+    }
 }
 
 def draw_text_on_shirt(image, x, y, text, font_path, font_size, text_color, outline_color=None, rotation_angle=-2, outline_thickness=2):
@@ -64,7 +70,7 @@ def draw_text_on_shirt(image, x, y, text, font_path, font_size, text_color, outl
     final_img = final_img.filter(ImageFilter.GaussianBlur(0.5))
 
     draw_width, draw_height = final_img.size
-    paste_x = x - draw_width // 2 + 65  # Adjust horizontally if needed
+    paste_x = x - draw_width // 2 + 65
     image.paste(final_img, (paste_x, y), final_img)
 
 @app.route('/generate', methods=['POST'])
@@ -80,11 +86,12 @@ def generate():
     image_path = team_data["template_path"]
     x, y = team_data["x"], team_data["y"]
     text_color = ImageColor.getrgb(team_data["text_color"])
+    outline_color = ImageColor.getrgb(team_data["outline_color"]) if "outline_color" in team_data else None
 
     try:
         image = Image.open(image_path).convert('RGBA')
         font_size = max(75, 130 - len(name) * 5)
-        draw_text_on_shirt(image, x, y, name, FONT_PATH, font_size, text_color)
+        draw_text_on_shirt(image, x, y, name, FONT_PATH, font_size, text_color, outline_color)
         image = image.convert('RGB')
 
         img_io = io.BytesIO()
