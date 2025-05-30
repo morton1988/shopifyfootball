@@ -3,10 +3,9 @@ from flask_cors import CORS
 from PIL import Image, ImageDraw, ImageFont, ImageColor, ImageFilter
 import os
 import io
-import uuid
 
 app = Flask(__name__)
-CORS(app)  # Allow cross-origin requests from all domains
+CORS(app)  # Enable CORS for all domains
 
 # Font setup
 FONT_PATH = "static/fonts/RadikalTrial-Bold.otf"
@@ -38,7 +37,6 @@ TEAMS = {
 def draw_text_on_shirt(image, x, y, text, font_path, font_size, text_color, outline_color=None, rotation_angle=-2, outline_thickness=3):
     scale_factor = 4
     font = ImageFont.truetype(font_path, int(font_size * scale_factor))
-
     dummy_img = Image.new('RGBA', (10, 10), (0, 0, 0, 0))
     dummy_draw = ImageDraw.Draw(dummy_img)
     bbox = dummy_draw.textbbox((0, 0), text, font=font)
@@ -68,6 +66,10 @@ def draw_text_on_shirt(image, x, y, text, font_path, font_size, text_color, outl
     draw_width, draw_height = final_img.size
     paste_x = x - draw_width // 2 + 65
     image.paste(final_img, (paste_x, y), final_img)
+
+@app.route('/')
+def home():
+    return jsonify({"message": "API is live. Use POST /generate with JSON payload."})
 
 @app.route('/generate', methods=['POST'])
 def generate():
