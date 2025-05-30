@@ -12,7 +12,7 @@ FALLBACK_FONT = "static/fonts/arial.ttf"
 
 # Team data with updated relative paths
 TEAMS = {
-    "Arsenal": {"template_path": "static/teams/arsenal no name.jpg", "text_color": "#DEDEE0", "x": 1780, "y": 820},
+    "Arsenal": {"template_path": "static/teams/arsenal no name.jpg", "text_color": "#DEDEE0", "x": 1700, "y": 820},
     "Aston Villa": {"template_path": "static/teams/ASTON VILLA NO NAME BOARDER.jpg", "text_color": "#C6C6C6", "x": 1838, "y": 800},
     "Watford": {"template_path": "static/teams/WATFORD no name.jpg", "text_color": "#000000", "x": 1735, "y": 820},
     "Brentford": {"template_path": "static/teams/brentford NO NAME.jpg", "text_color": "#100E0F", "x": 1825, "y": 820},
