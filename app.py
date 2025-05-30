@@ -22,7 +22,7 @@ TEAMS = {
     "Crystal Palace": {"template_path": "static/teams/crystal palace no name.jpg", "text_color": "#919191", "x": 2235, "y": 868},
     "Everton": {"template_path": "static/teams/everton.jpg", "text_color": "#BBBBBB", "x": 1680, "y": 820},
     "Hull City": {"template_path": "static/teams/hull city NO NAME.jpg", "text_color": "#160E03", "x": 1680, "y": 820},
-    "Liverpool": {"template_path": "static/teams/LIVERPOOL NO NAME.jpg", "text_color": "#B5B5B7", "x": 2150, "y": 1000},
+    "Liverpool": {"template_path": "static/teams/LIVERPOOL NO NAME.jpg", "text_color": "#B5B5B7", "x": 2100, "y": 820},
     "Manchester City": {"template_path": "static/teams/MANCHESTER CITY NO NAME NUMBER 10.jpg", "text_color": "#FFFFFF", "x": 1700, "y": 800},
     "Manchester United": {"template_path": "static/teams/manchester united no name on shirt.jpg", "text_color": "#A5B0AC", "x": 2150, "y": 850},
     "Newcastle": {"template_path": "static/teams/newcastle NO NAME.jpg", "text_color": "#6B1019", "x": 1730, "y": 855},
@@ -32,6 +32,36 @@ TEAMS = {
     "West Ham": {"template_path": "static/teams/west ham no name.jpg", "text_color": "#B2B2B2", "x": 1680, "y": 830},
     "Wolves": {"template_path": "static/teams/wolves NO NAME.jpg", "text_color": "#000000", "x": 1735, "y": 830}
 }
+
+def draw_text_on_shirt(image, x, y, text, font_path, font_size, text_color, outline_color=None, rotation_angle=0, outline_thickness=2):
+    font = ImageFont.truetype(font_path, font_size)
+    dummy_draw = ImageDraw.Draw(image)
+    bbox = dummy_draw.textbbox((0, 0), text, font=font)
+    text_width = bbox[2] - bbox[0]
+    text_height = bbox[3] - bbox[1]
+    centered_x = x - text_width // 2
+
+    scale_factor = 4
+    font = ImageFont.truetype(font_path, int(font_size * scale_factor))
+    canvas_width = text_width * scale_factor + 500
+    canvas_height = text_height * scale_factor + 500
+    text_img = Image.new('RGBA', (canvas_width, canvas_height), (255, 255, 255, 0))
+    text_draw = ImageDraw.Draw(text_img)
+
+    text_x = (canvas_width - text_width * scale_factor) // 2
+    text_y = (canvas_height - text_height * scale_factor) // 2
+
+    if outline_color:
+        for ox in range(-outline_thickness * scale_factor, outline_thickness * scale_factor + 1):
+            for oy in range(-outline_thickness * scale_factor, outline_thickness * scale_factor + 1):
+                text_draw.text((text_x + ox, text_y + oy), text, font=font, fill=outline_color)
+
+    text_draw.text((text_x, text_y), text, font=font, fill=text_color)
+
+    rotated_text_img = text_img.rotate(rotation_angle, expand=True)
+    final_text_img = rotated_text_img.resize((rotated_text_img.width // scale_factor, rotated_text_img.height // scale_factor), Image.LANCZOS)
+    final_text_img = final_text_img.filter(ImageFilter.GaussianBlur(0.5))
+    image.paste(final_text_img, (centered_x, y), final_text_img)
 
 @app.route('/generate', methods=['POST'])
 def generate():
@@ -49,22 +79,10 @@ def generate():
 
     try:
         image = Image.open(image_path)
-        draw = ImageDraw.Draw(image)
 
-        # Dynamic font size
         font_size = max(75, 130 - len(name) * 5)
-        try:
-            font = ImageFont.truetype(FONT_PATH, font_size)
-        except:
-            font = ImageFont.truetype(FALLBACK_FONT, font_size)
+        draw_text_on_shirt(image, x, y, name, FONT_PATH, font_size, text_color)
 
-        bbox = draw.textbbox((0, 0), name, font=font)
-        text_width = bbox[2] - bbox[0]
-        centered_x = x - text_width // 2
-
-        draw.text((centered_x, y), name, font=font, fill=text_color)
-
-        # Save to buffer
         img_io = io.BytesIO()
         image.save(img_io, 'JPEG', quality=85)
         img_io.seek(0)
