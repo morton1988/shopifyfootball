@@ -64,7 +64,7 @@ def draw_text_on_shirt(image, x, y, text, font_path, font_size, text_color, outl
     final_img = final_img.filter(ImageFilter.GaussianBlur(0.5))
 
     draw_width, draw_height = final_img.size
-    paste_x = x - draw_width // 2 + 20  # Adjust horizontally if needed
+    paste_x = x - draw_width // 2 + 40  # Adjust horizontally if needed
     image.paste(final_img, (paste_x, y), final_img)
 
 @app.route('/generate', methods=['POST'])
