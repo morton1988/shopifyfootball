@@ -33,7 +33,7 @@ TEAMS = {
     "Wolves": {"template_path": "static/teams/wolves NO NAME.jpg", "text_color": "#000000", "x": 1735, "y": 830}
 }
 
-def draw_text_on_shirt(image, x, y, text, font_path, font_size, text_color, outline_color=None, rotation_angle=2, outline_thickness=2):
+def draw_text_on_shirt(image, x, y, text, font_path, font_size, text_color, outline_color=None, rotation_angle=-2, outline_thickness=2):
     scale_factor = 4
     font = ImageFont.truetype(font_path, int(font_size * scale_factor))
 
@@ -64,7 +64,7 @@ def draw_text_on_shirt(image, x, y, text, font_path, font_size, text_color, outl
     final_img = final_img.filter(ImageFilter.GaussianBlur(0.5))
 
     draw_width, draw_height = final_img.size
-    paste_x = x - draw_width // 2
+    paste_x = x - draw_width // 2 + 20  # Adjust horizontally if needed
     image.paste(final_img, (paste_x, y), final_img)
 
 @app.route('/generate', methods=['POST'])
@@ -82,9 +82,10 @@ def generate():
     text_color = ImageColor.getrgb(team_data["text_color"])
 
     try:
-        image = Image.open(image_path)
+        image = Image.open(image_path).convert('RGBA')
         font_size = max(75, 130 - len(name) * 5)
         draw_text_on_shirt(image, x, y, name, FONT_PATH, font_size, text_color)
+        image = image.convert('RGB')
 
         img_io = io.BytesIO()
         image.save(img_io, 'JPEG', quality=85)
